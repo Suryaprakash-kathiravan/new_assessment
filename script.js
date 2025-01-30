@@ -18,25 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         postFormContainer.classList.add("hidden");
     });
 
-    function renderPosts() {
-        postsContainer.innerHTML = "";
-        posts.forEach((post, index) => {
-            const postElement = document.createElement("div");
-            postElement.classList.add("bg-white", "p-4", "rounded-lg", "shadow-md", "relative");
-            postElement.innerHTML = `
-                <h3 class="text-xl font-bold">${post.title}</h3>
-                <p class="mt-2">${post.content}</p>
-                <p class="mt-2 text-sm text-gray-500">Views: ${post.views || 0}</p>
-                <div class="mt-4 flex space-x-2">
-                    <button onclick="editPost(${index})" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</button>
-                    <button onclick="deletePost(${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
-                </div>
-            `;
-            postsContainer.appendChild(postElement);
-        });
-
-        localStorage.setItem("posts", JSON.stringify(posts));
-    }
 
     postForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -46,11 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (title && content) {
             if (editingPostId !== null) {
-                // Update existing post
                 posts[editingPostId] = { ...posts[editingPostId], title, content };
                 editingPostId = null;
             } else {
-                // Add new post with initial view count of 0
                 posts.push({ title, content, views: 0 });
             }
 
@@ -74,16 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Function to increment view count
     window.viewPost = (index) => {
         if (!posts[index].views) {
             posts[index].views = 0;
         }
         posts[index].views++;
+        editPost(index);
         renderPosts();
     };
 
-    // Modify the post rendering to include a "View" button
     function renderPosts() {
         postsContainer.innerHTML = "";
         posts.forEach((post, index) => {
@@ -92,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             postElement.innerHTML = `
                 <h3 class="text-xl font-bold">${post.title}</h3>
                 <p class="mt-2">${post.content}</p>
-                <p class="mt-2 text-sm text-gray-500">Views: ${post.views || 0}</p>
+                <p class="mt-2 text-sm text-gray-500">👁️: ${post.views || 0}</p>
                 <div class="mt-4 flex space-x-2">
                     <button onclick="editPost(${index})" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</button>
                     <button onclick="deletePost(${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
