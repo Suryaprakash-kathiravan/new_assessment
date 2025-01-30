@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const openFormBtn = document.getElementById("openForm");
     const cancelFormBtn = document.getElementById("cancelForm");
-    const postFormContainer = document.getElementById("postFormContainer");
+    const postFormOverlay = document.getElementById("postFormOverlay");
     const postForm = document.getElementById("postForm");
     const postsContainer = document.getElementById("postsContainer");
 
@@ -11,13 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     openFormBtn.addEventListener("click", () => {
         editingPostId = null;
         postForm.reset();
-        postFormContainer.classList.remove("hidden");
+        postFormOverlay.classList.remove("hidden");
     });
 
     cancelFormBtn.addEventListener("click", () => {
-        postFormContainer.classList.add("hidden");
+        postFormOverlay.classList.add("hidden");
     });
-
 
     postForm.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -34,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             postForm.reset();
-            postFormContainer.classList.add("hidden");
+            postFormOverlay.classList.add("hidden");
             renderPosts();
         }
     });
@@ -43,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editingPostId = index;
         document.getElementById("title").value = posts[index].title;
         document.getElementById("content").value = posts[index].content;
-        postFormContainer.classList.remove("hidden");
+        postFormOverlay.classList.remove("hidden");
     };
 
     window.deletePost = (index) => {
@@ -66,10 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
         postsContainer.innerHTML = "";
         posts.forEach((post, index) => {
             const postElement = document.createElement("div");
-            postElement.classList.add("bg-white", "p-4", "rounded-lg", "shadow-md", "relative");
+            postElement.classList.add("bg-white", "p-10", "rounded-lg", "shadow-md", "relative",'hover:bg-blue-100',"truncate","px-20");
+            const truncatedContent = post.content.length > 20 ? post.content.substring(0, 20) + "..." : post.content;
             postElement.innerHTML = `
                 <h3 class="text-xl font-bold">${post.title}</h3>
-                <p class="mt-2">${post.content}</p>
+                <p class="mt-2">${truncatedContent}</p>
                 <p class="mt-2 text-sm text-gray-500">👁️: ${post.views || 0}</p>
                 <div class="mt-4 flex space-x-2">
                     <button onclick="editPost(${index})" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</button>
