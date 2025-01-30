@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Website</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="container mx-auto p-4">
+    <h1 class="text-4xl font-bold text-center mb-8">My Blog</h1>
+
+    <!-- Button to open the create post form -->
+    <div class="text-center mb-4">
+      <button id="openForm" class="bg-blue-500 text-white text-bold px-4 py-2 rounded hover:bg-blue-600">Create New Post</button>
+    </div>
+
+    <!-- Hidden Create Post Form -->
+    <div id="postFormContainer" class="hidden bg-white p-6 rounded-lg shadow-md mb-8">
+      <h2 class="text-2xl font-bold mb-4">Create a New Post</h2>
+      <form id="postForm">
+        <input type="hidden" id="postId">
+        <input type="text" id="title" placeholder="Title" class="w-full p-2 border rounded mb-4">
+        <textarea id="content" placeholder="Content" class="w-full p-2 border rounded mb-4"></textarea>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Save Post</button>
+        <button id="cancelForm" type="button" class="bg-gray-500 text-white px-4 py-2 rounded ml-2 hover:bg-gray-600">Cancel</button>
+      </form>
+    </div>
+
+    <div id="postsContainer" class="space-y-4">
+      
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
