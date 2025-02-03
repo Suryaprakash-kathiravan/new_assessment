@@ -77,24 +77,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function renderPosts() {
+    const searchInput = document.getElementById('searchPost');
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        renderPosts(query);
+    });
+
+    function renderPosts(query = '') {
         postsContainer.innerHTML = "";
         posts.forEach((post, index) => {
-            const postElement = document.createElement("div");
-            postElement.classList.add("bg-white", "p-10", "rounded-lg", "shadow-md", "relative",'hover:bg-blue-100',"truncate","px-20");
-            const truncatedContent = post.content.length > 20 ? post.content.substring(0, 20) + "..." : post.content;
-            const truncatedtitle = post.title.length > 20 ? post.title.substring(0, 20) + "..." : post.title;
-            postElement.innerHTML = `
-                <h3 class="text-xl font-bold">${truncatedtitle}</h3>
-                <p class="mt-2">${truncatedContent}</p>
-                <p class="mt-2 text-sm text-gray-500">👁️: ${post.views || 0}</p>
-                <div class="mt-4 flex space-x-2">
-                    <button onclick="editPost(${index})" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition ease-in-out duration-300">Edit</button>
-                    <button onclick="deletePost(${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition ease-in-out duration-300">Delete</button>
-                    <button onclick="viewPost(${index})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition ease-in-out duration-300">View</button>
-                </div>
-            `;
-            postsContainer.appendChild(postElement);
+            const titleLower = post.title.toLowerCase();
+            const contentLower = post.content.toLowerCase();
+            if (titleLower.includes(query) || contentLower.includes(query)) {
+                const postElement = document.createElement("div");
+                postElement.classList.add("bg-white", "p-10", "rounded-lg", "shadow-md", "relative", "hover:bg-blue-100", "truncate", "px-20", "postElement");
+                const truncatedContent = post.content.length > 20 ? post.content.substring(0, 20) + "..." : post.content;
+                const truncatedTitle = post.title.length > 20 ? post.title.substring(0, 20) + "..." : post.title;
+                postElement.innerHTML = `
+                    <h3 class="text-xl font-bold">${truncatedTitle}</h3>
+                    <p class="mt-2">${truncatedContent}</p>
+                    <p class="mt-2 text-sm text-gray-500">👁️: ${post.views || 0}</p>
+                    <div class="mt-4 flex space-x-2">
+                        <button onclick="editPost(${index})" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition ease-in-out duration-300">Edit</button>
+                        <button onclick="deletePost(${index})" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition ease-in-out duration-300">Delete</button>
+                        <button onclick="viewPost(${index})" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition ease-in-out duration-300">View</button>
+                    </div>
+                `;
+                postsContainer.appendChild(postElement);
+            }
         });
 
         localStorage.setItem("posts", JSON.stringify(posts));
